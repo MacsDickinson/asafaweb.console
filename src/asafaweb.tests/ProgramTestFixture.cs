@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 using HtmlAgilityPack;
 using NUnit.Framework;
 using asafaweb.console.Enums;
@@ -45,6 +46,30 @@ namespace asafaweb.tests
             // Act
             logic.LoadHtmlResponse(uri);
             // Assert
+        }
+
+        [Test]
+        public void StatusLogic_GetResults_ValidUrl_ReturnsListOfStatus()
+        {
+            // Arrange
+            const string url = "http://www.google.com";
+            // Act
+            var result = StatusLogic.GetTestResults(url);
+            // Assert
+            Assert.That(result.GetType(), Is.EqualTo(typeof(Dictionary<string, AsafaResult>)));
+            Assert.That(result.Count, Is.GreaterThan(0));
+        }
+
+        [Test]
+        public void StatusLogic_GetResults_InvalidUrl_ReturnsEmptyList()
+        {
+            // Arrange
+            const string url = "http://fail";
+            // Act
+            var result = StatusLogic.GetTestResults(url);
+            // Assert
+            Assert.That(result.GetType(), Is.EqualTo(typeof(Dictionary<string, AsafaResult>)));
+            Assert.That(result.Count, Is.EqualTo(0));
         }
     }
 }
