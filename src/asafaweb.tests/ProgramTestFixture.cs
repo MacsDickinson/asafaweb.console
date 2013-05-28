@@ -1,4 +1,5 @@
-﻿using HtmlAgilityPack;
+﻿using System.Net;
+using HtmlAgilityPack;
 using NUnit.Framework;
 using asafaweb.console.Enums;
 using asafaweb.console.Logic;
@@ -23,7 +24,7 @@ namespace asafaweb.tests
         }
 
         [Test]
-        public void HtmlGetLogic_LoadHtmlRespose_LoadsResponse()
+        public void HtmlGetLogic_LoadHtmlRespose_ValidUrl_LoadsResponse()
         {
             // Arrange
             HtmlGetLogic logic = new HtmlGetLogic();
@@ -32,7 +33,18 @@ namespace asafaweb.tests
             var result = logic.LoadHtmlResponse(uri);
             // Assert
             Assert.That(result.GetType(), Is.EqualTo(typeof(HtmlDocument)));
+        }
 
+        [Test]
+        [ExpectedException(typeof(WebException), ExpectedMessage = "The remote name could not be resolved: 'fail'")]
+        public void HtmlGetLogic_LoadHtmlRespose_InvalidUrl_DoesntLoadResponse()
+        {
+            // Arrange
+            HtmlGetLogic logic = new HtmlGetLogic();
+            const string uri = "http://fail";
+            // Act
+            logic.LoadHtmlResponse(uri);
+            // Assert
         }
     }
 }
