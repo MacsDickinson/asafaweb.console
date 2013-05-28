@@ -202,6 +202,5 @@ namespace asafaweb.tests
             // Assert
             Assert.That(updatedResults.Count, Is.EqualTo(0));
         }
-
     }
 }
