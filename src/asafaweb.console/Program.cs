@@ -86,8 +86,15 @@ namespace asafaweb.console
 
             if (extra.Count > 0)
             {
+                _validParams = false;
                 string message = string.Join(" ", extra.ToArray());
                 Console.WriteLine("Unexpected parameters: {0}", message);
+            }
+
+            if (string.IsNullOrEmpty(_url))
+            {
+                _validParams = false;
+                Console.WriteLine("No URL provided. Please provide with the option -url. Try -help for more info...");
             }
 
             return new StatusLogic
@@ -100,9 +107,9 @@ namespace asafaweb.console
 
         static void ShowHelp(OptionSet p)
         {
-            Console.WriteLine("Usage: greet [OPTIONS]+ message");
-            Console.WriteLine("Greet a list of individuals with an optional message.");
-            Console.WriteLine("If no message is specified, a generic greeting is used.");
+            Console.WriteLine("Usage: asafaweb.console [OPTIONS]+");
+            Console.WriteLine("Scans the url provided against the security tests defined on www.asafaweb.com.");
+            Console.WriteLine("A url will need to be specified.");
             Console.WriteLine();
             Console.WriteLine("Options:");
             p.WriteOptionDescriptions(Console.Out);
