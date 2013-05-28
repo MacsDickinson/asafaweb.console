@@ -73,7 +73,7 @@ namespace asafaweb.tests
         }
 
         [Test]
-        public void TestRunLogic_AnalyseResults_AllPass_NoneFailed()
+        public void StatusLogic_AnalyseResults_AllPass_NoneFailed()
         {
             // Arrange
             Dictionary<string, AsafaResult> results = new Dictionary<string, AsafaResult>
@@ -92,7 +92,7 @@ namespace asafaweb.tests
         }
 
         [Test]
-        public void TestRunLogic_AnalyseResults_AllFail_AllFailed()
+        public void StatusLogic_AnalyseResults_AllFail_AllFailed()
         {
             // Arrange
             Dictionary<string, AsafaResult> results = new Dictionary<string, AsafaResult>
@@ -111,7 +111,7 @@ namespace asafaweb.tests
         }
 
         [Test]
-        public void TestRunLogic_AnalyseResults_SomeFail_SomeFailed()
+        public void StatusLogic_AnalyseResults_SomeFail_SomeFailed()
         {
             // Arrange
             Dictionary<string, AsafaResult> results = new Dictionary<string, AsafaResult>
@@ -128,5 +128,80 @@ namespace asafaweb.tests
             // Assert
             Assert.That(updatedResults.Count, Is.EqualTo(3));
         }
+
+        [Test]
+        public void StatusLogic_AnalyseResults_FailOnWarning_SomeWarning_IncludedInFails()
+        {
+            // Arrange
+            Dictionary<string, AsafaResult> results = new Dictionary<string, AsafaResult>
+                {
+                    {"Key1", AsafaResult.Warning}
+                };
+            StatusLogic logic = new StatusLogic {FailOnWarning = true};
+            // Act
+            Dictionary<string, AsafaResult> updatedResults = logic.AnalyseResults(results);
+            // Assert
+            Assert.That(updatedResults.Count, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void StatusLogic_AnalyseResults_DontFailOnWarning_SomeWarning_NotIncluded()
+        {
+            // Arrange
+            Dictionary<string, AsafaResult> results = new Dictionary<string, AsafaResult>
+                {
+                    {"Key1", AsafaResult.Warning}
+                };
+            StatusLogic logic = new StatusLogic { FailOnWarning = false };
+            // Act
+            Dictionary<string, AsafaResult> updatedResults = logic.AnalyseResults(results);
+            // Assert
+            Assert.That(updatedResults.Count, Is.EqualTo(0));
+        }
+        [Test]
+        public void StatusLogic_AnalyseResults_FailOnNotTested_SomeNotTested_IncludedInFails()
+        {
+            // Arrange
+            Dictionary<string, AsafaResult> results = new Dictionary<string, AsafaResult>
+                {
+                    {"Key1", AsafaResult.NotTested}
+                };
+            StatusLogic logic = new StatusLogic { FailOnNotTested = true };
+            // Act
+            Dictionary<string, AsafaResult> updatedResults = logic.AnalyseResults(results);
+            // Assert
+            Assert.That(updatedResults.Count, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void StatusLogic_AnalyseResults_DontFailOnNotTested_SomeNotTested_NotIncluded()
+        {
+            // Arrange
+            Dictionary<string, AsafaResult> results = new Dictionary<string, AsafaResult>
+                {
+                    {"Key1", AsafaResult.NotTested}
+                };
+            StatusLogic logic = new StatusLogic { FailOnNotTested = false };
+            // Act
+            Dictionary<string, AsafaResult> updatedResults = logic.AnalyseResults(results);
+            // Assert
+            Assert.That(updatedResults.Count, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void StatusLogic_AnalyseResults_DontFailOnFailure_SomeFailed_NotIncluded()
+        {
+            // Arrange
+            Dictionary<string, AsafaResult> results = new Dictionary<string, AsafaResult>
+                {
+                    {"Key1", AsafaResult.Fail}
+                };
+            StatusLogic logic = new StatusLogic { FailOnFailure = false };
+            // Act
+            Dictionary<string, AsafaResult> updatedResults = logic.AnalyseResults(results);
+            // Assert
+            Assert.That(updatedResults.Count, Is.EqualTo(0));
+        }
+
     }
 }
