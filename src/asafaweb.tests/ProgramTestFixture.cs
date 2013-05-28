@@ -71,5 +71,62 @@ namespace asafaweb.tests
             Assert.That(result.GetType(), Is.EqualTo(typeof(Dictionary<string, AsafaResult>)));
             Assert.That(result.Count, Is.EqualTo(0));
         }
+
+        [Test]
+        public void TestRunLogic_AnalyseResults_AllPass_NoneFailed()
+        {
+            // Arrange
+            Dictionary<string, AsafaResult> results = new Dictionary<string, AsafaResult>
+                {
+                    {"Key1", AsafaResult.Pass},
+                    {"Key2", AsafaResult.Pass},
+                    {"Key3", AsafaResult.Pass},
+                    {"Key4", AsafaResult.Pass},
+                    {"Key5", AsafaResult.Pass},
+                };
+            StatusLogic logic = new StatusLogic();
+            // Act
+            Dictionary<string, AsafaResult> updatedResults = logic.AnalyseResults(results);
+            // Assert
+            Assert.That(updatedResults.Count, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void TestRunLogic_AnalyseResults_AllFail_AllFailed()
+        {
+            // Arrange
+            Dictionary<string, AsafaResult> results = new Dictionary<string, AsafaResult>
+                {
+                    {"Key1", AsafaResult.Fail},
+                    {"Key2", AsafaResult.Fail},
+                    {"Key3", AsafaResult.Fail},
+                    {"Key4", AsafaResult.Fail},
+                    {"Key5", AsafaResult.Fail},
+                };
+            StatusLogic logic = new StatusLogic();
+            // Act
+            Dictionary<string, AsafaResult> updatedResults = logic.AnalyseResults(results);
+            // Assert
+            Assert.That(updatedResults.Count, Is.EqualTo(5));
+        }
+
+        [Test]
+        public void TestRunLogic_AnalyseResults_SomeFail_SomeFailed()
+        {
+            // Arrange
+            Dictionary<string, AsafaResult> results = new Dictionary<string, AsafaResult>
+                {
+                    {"Key1", AsafaResult.Fail},
+                    {"Key2", AsafaResult.Pass},
+                    {"Key3", AsafaResult.Fail},
+                    {"Key4", AsafaResult.Pass},
+                    {"Key5", AsafaResult.Fail},
+                };
+            StatusLogic logic = new StatusLogic();
+            // Act
+            Dictionary<string, AsafaResult> updatedResults = logic.AnalyseResults(results);
+            // Assert
+            Assert.That(updatedResults.Count, Is.EqualTo(3));
+        }
     }
 }

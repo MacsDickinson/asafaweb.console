@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -11,6 +10,51 @@ namespace asafaweb.console.Logic
 {
     public class StatusLogic
     {
+        #region Properties
+        public bool FailOnWarning { get; set; }
+        public bool FailOnNotTested { get; set; }
+        public bool FailOnFailure { get; set; }
+        #endregion
+
+        public StatusLogic()
+        {
+            FailOnFailure = true;
+            FailOnWarning = false;
+            FailOnNotTested = false;
+        }
+
+        public Dictionary<string, AsafaResult> AnalyseResults(Dictionary<string, AsafaResult> results)
+        {
+            Dictionary<string, AsafaResult> failedResults = new Dictionary<string, AsafaResult>();
+            foreach (KeyValuePair<string, AsafaResult> asafaResult in results)
+            {
+                if (FailOnWarning)
+                {
+                    if (asafaResult.Value == AsafaResult.Warning)
+                    {
+                        failedResults.Add(asafaResult.Key, asafaResult.Value);
+                    }
+                }
+                if (FailOnNotTested)
+                {
+                    if (asafaResult.Value == AsafaResult.NotTested)
+                    {
+                        failedResults.Add(asafaResult.Key, asafaResult.Value);
+                    }
+                }
+                if (FailOnFailure)
+                {
+                    if (asafaResult.Value == AsafaResult.Fail)
+                    {
+                        failedResults.Add(asafaResult.Key, asafaResult.Value);
+                    }
+                }
+            }
+            return failedResults;
+        }
+
+        #region Static Methods
+
         public static AsafaResult GetStatus(string status)
         {
             switch (status)
@@ -42,5 +86,7 @@ namespace asafaweb.console.Logic
                 return new Dictionary<string, AsafaResult>();
             }
         }
+
+        #endregion
     }
 }

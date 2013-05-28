@@ -2,9 +2,9 @@
 {
     public enum AsafaResult
     {
-        Pass,
         Fail,
         Warning,
-        NotTested
+        NotTested,
+        Pass
     }
 }
