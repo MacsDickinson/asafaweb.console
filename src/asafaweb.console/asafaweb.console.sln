@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "asafaweb.console", "asafaweb.console.csproj", "{1B7A3496-7FC5-4B35-A2FA-F07B00A9EC93}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "asafaweb.tests", "..\asafaweb.tests\asafaweb.tests.csproj", "{E17F129F-520F-413B-A202-D0AEC3DF989B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{1B7A3496-7FC5-4B35-A2FA-F07B00A9EC93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B7A3496-7FC5-4B35-A2FA-F07B00A9EC93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B7A3496-7FC5-4B35-A2FA-F07B00A9EC93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E17F129F-520F-413B-A202-D0AEC3DF989B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E17F129F-520F-413B-A202-D0AEC3DF989B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E17F129F-520F-413B-A202-D0AEC3DF989B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E17F129F-520F-413B-A202-D0AEC3DF989B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
