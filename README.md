@@ -12,6 +12,21 @@ Example:
 
 ```asafaweb.console -url=www.google.com -fw -ignore=CustomErrors```
 
+Implementation using NAnt
+
+```xml
+<property name="asafaweb.console.exe" value="C:\YourLocalPathTo\asafaweb.console.exe" />
+<property name="deployment.url" value="http://www.your-shiny-new-website.com/" />
+  
+<target name="asafaweb">
+    <exec failonerror="true" program="${asafaweb.console.exe}" verbose="true">
+      <arg value="-u:${deployment.url}" />
+      <arg value="-f" />
+      <arg value="-i:CustomErrors,StackTrace" />
+    </exec>
+</target>
+```
+
 Options
 -------
 
