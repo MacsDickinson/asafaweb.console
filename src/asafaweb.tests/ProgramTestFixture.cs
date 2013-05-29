@@ -202,5 +202,38 @@ namespace asafaweb.tests
             // Assert
             Assert.That(updatedResults.Count, Is.EqualTo(0));
         }
+
+        [Test]
+        public void StatusLogic_IsTestIgnored_TestIsIgnored_ReturnsTrue()
+        {
+            // Arrange
+            StatusLogic logic = new StatusLogic { IgnoredTests = new List<string>{"TestA"} };
+            // Act
+            bool result = logic.IsTestIgnored("TestA");
+            // Assert
+            Assert.That(result, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void StatusLogic_IsTestIgnored_TestNotIgnored_ReturnsFalse()
+        {
+            // Arrange
+            StatusLogic logic = new StatusLogic { IgnoredTests = new List<string> { "TestA" } };
+            // Act
+            bool result = logic.IsTestIgnored("TestB");
+            // Assert
+            Assert.That(result, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void StatusLogic_IsTestIgnored_TestIsOneOfMany_ReturnsTrue()
+        {
+            // Arrange
+            StatusLogic logic = new StatusLogic { IgnoredTests = new List<string> { "TestA","TestB","TestC" } };
+            // Act
+            bool result = logic.IsTestIgnored("TestB");
+            // Assert
+            Assert.That(result, Is.EqualTo(true));
+        }
     }
 }

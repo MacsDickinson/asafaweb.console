@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Web;
 using NDesk.Options;
@@ -34,6 +35,10 @@ namespace asafaweb.console
                     Console.Write("None, this will always pass");
                 }
                 Console.WriteLine();
+                if (logic.IgnoredTests.Count > 0)
+                {
+                    Console.WriteLine("Ignored Tests: {0}", logic.IgnoredTests.Aggregate((i, j) => i + ", " + j));
+                }
                 Console.WriteLine("Scanning {0}", _url);
                 var results = logic.AnalyseResults(StatusLogic.GetTestResults(_url));
                 if (results.Count > 0)
@@ -59,7 +64,7 @@ namespace asafaweb.console
             bool failonerror = false;
             bool failonwarning = false;
             bool failonnottested = false;
-
+            List<string> ignoredTests = new List<string>();
             var p = new OptionSet
                 {
                     {
@@ -77,6 +82,10 @@ namespace asafaweb.console
                     {
                         "n|failonnottested", "Fail the test if any tests arn't completed",
                         v => { if (v != null) failonnottested = true; }
+                    },
+                    {
+                        "i|ignore=", "A comma seperated list of {TESTS} to ignore. Tests include:\nTracing\nCustomErrors\nStackTrace\nRequestValidation\nHttpToHttps\nHashDosPatch\nElmahLog\nExcessiveHeaders\nHttpOnlyCookies\nSecureCookies\nClickjacking",
+                        i => { if (!string.IsNullOrEmpty(i)) ignoredTests.AddRange(i.Split(',')); }
                     },
                     {
                         "h|help", "show this message and exit",
@@ -122,7 +131,8 @@ namespace asafaweb.console
                 {
                     FailOnFailure = failonerror,
                     FailOnNotTested = failonnottested,
-                    FailOnWarning = failonwarning
+                    FailOnWarning = failonwarning,
+                    IgnoredTests = ignoredTests
                 };
         }
 

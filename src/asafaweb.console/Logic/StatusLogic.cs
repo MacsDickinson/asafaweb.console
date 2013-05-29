@@ -14,6 +14,7 @@ namespace asafaweb.console.Logic
         public bool FailOnWarning { get; set; }
         public bool FailOnNotTested { get; set; }
         public bool FailOnFailure { get; set; }
+        public List<string> IgnoredTests { get; set; }
         #endregion
 
         public StatusLogic()
@@ -21,12 +22,13 @@ namespace asafaweb.console.Logic
             FailOnFailure = true;
             FailOnWarning = false;
             FailOnNotTested = false;
+            IgnoredTests = new List<string>();
         }
 
         public Dictionary<string, AsafaResult> AnalyseResults(Dictionary<string, AsafaResult> results)
         {
             Dictionary<string, AsafaResult> failedResults = new Dictionary<string, AsafaResult>();
-            foreach (KeyValuePair<string, AsafaResult> asafaResult in results)
+            foreach (KeyValuePair<string, AsafaResult> asafaResult in results.Where(asafaResult => !IsTestIgnored(asafaResult.Key)))
             {
                 if (FailOnWarning)
                 {
@@ -52,6 +54,12 @@ namespace asafaweb.console.Logic
             }
             return failedResults;
         }
+
+        public bool IsTestIgnored(string name)
+        {
+            return IgnoredTests.Contains(name);
+        }
+
 
         #region Static Methods
 
