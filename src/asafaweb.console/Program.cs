@@ -12,6 +12,7 @@ namespace asafaweb.console
     {
         private static string _url;
         private static bool _validParams = true;
+        private static bool _throwExceptionOnFail = false;
         static void Main(string[] args)
         {
             StatusLogic logic = LoadParams(args);
@@ -52,7 +53,10 @@ namespace asafaweb.console
                     sb.AppendLine();
                     sb.AppendLine(string.Format("For more information visit https://asafaweb.com/Scan?Url={0}", HttpUtility.UrlEncode(_url)));
                     Console.WriteLine(sb.ToString());
-                    throw new Exception(sb.ToString());
+                    if (_throwExceptionOnFail)
+                    {
+                        throw new Exception(sb.ToString());
+                    }
                 }
                 Console.WriteLine("No errors found");
             }
@@ -82,6 +86,10 @@ namespace asafaweb.console
                     {
                         "n|failonnottested", "Fail the test if any tests arn't completed",
                         v => { if (v != null) failonnottested = true; }
+                    },
+                    {
+                        "x|throwexceptiononfail", "Throws an exception if the tests fail",
+                        v => { if (v != null) _throwExceptionOnFail = true; }
                     },
                     {
                         "i|ignore=", "A comma seperated list of {TESTS} to ignore. Tests include:\nTracing\nCustomErrors\nStackTrace\nRequestValidation\nHttpToHttps\nHashDosPatch\nElmahLog\nExcessiveHeaders\nHttpOnlyCookies\nSecureCookies\nClickjacking",
