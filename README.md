@@ -1,7 +1,9 @@
 asafaweb.console
 ================
 
-A simple console app to run the asafaweb tests. The purpose of this is to enable an automated post publish security step through CI platforms such as NANT ans MSBuild.
+A simple console app that runs the asafaweb tests and scrapes the results. The purpose of this is to enable an automated post publish security check through CI platforms such as NANT and MSBuild.
+
+Download only the required files here: http://bit.ly/10H9PRr
 
 Usage
 -----
