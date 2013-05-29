@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Web;
 using NDesk.Options;
 using asafaweb.console.Logic;
@@ -15,21 +16,41 @@ namespace asafaweb.console
             StatusLogic logic = LoadParams(args);
             if (_validParams)
             {
+                Console.Write("Selected failures: ");
+                if (logic.FailOnFailure)
+                {
+                    Console.Write("Failures ");
+                }
+                if (logic.FailOnWarning)
+                {
+                    Console.Write("Warnings ");
+                }
+                if (logic.FailOnNotTested)
+                {
+                    Console.Write("Not Tested");
+                }
+                if (!logic.FailOnNotTested && !logic.FailOnWarning && !logic.FailOnFailure)
+                {
+                    Console.Write("None, this will always pass");
+                }
+                Console.WriteLine();
                 Console.WriteLine("Scanning {0}", _url);
                 var results = logic.AnalyseResults(StatusLogic.GetTestResults(_url));
                 if (results.Count > 0)
                 {
-                    Console.WriteLine("ERROR DETECTED:");
+                    StringBuilder sb = new StringBuilder();
+                    sb.AppendLine("ERROR DETECTED:");
                     foreach (var asafaResult in results)
                     {
-                        Console.WriteLine("The {0} test has failed with the status {1}", asafaResult.Key, asafaResult.Value);
+                        sb.AppendLine(string.Format("The {0} test has failed with the status {1}", asafaResult.Key, asafaResult.Value));
                     }
-                    Console.WriteLine();
-                    Console.WriteLine("For more information visit https://asafaweb.com/Scan?Url={0}", HttpUtility.UrlEncode(_url));
+                    sb.AppendLine();
+                    sb.AppendLine(string.Format("For more information visit https://asafaweb.com/Scan?Url={0}", HttpUtility.UrlEncode(_url)));
+                    Console.WriteLine(sb.ToString());
+                    throw new Exception(sb.ToString());
                 }
+                Console.WriteLine("No errors found");
             }
-            Console.WriteLine("Hit enter to close...");
-            Console.Read();
         }
 
         private static StatusLogic LoadParams(IEnumerable<string> args)
@@ -54,7 +75,7 @@ namespace asafaweb.console
                         v => { if (v != null) failonwarning = true; }
                     },
                     {
-                        "t|failonnottested", "Fail the test if any tests arn't completed",
+                        "n|failonnottested", "Fail the test if any tests arn't completed",
                         v => { if (v != null) failonnottested = true; }
                     },
                     {
@@ -109,7 +130,6 @@ namespace asafaweb.console
         {
             Console.WriteLine("Usage: asafaweb.console [OPTIONS]+");
             Console.WriteLine("Scans the url provided against the security tests defined on www.asafaweb.com.");
-            Console.WriteLine("A url will need to be specified.");
             Console.WriteLine();
             Console.WriteLine("Options:");
             p.WriteOptionDescriptions(Console.Out);
