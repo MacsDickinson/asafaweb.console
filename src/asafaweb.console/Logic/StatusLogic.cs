@@ -78,6 +78,12 @@ namespace asafaweb.console.Logic
             }
         }
 
+        public static void GetApiResults(string url, string apiUserName, string apiKey)
+        {
+            ApiLogic apiLogic = new ApiLogic(apiUserName, apiKey, url);
+            var JSONResult = apiLogic.Scan();
+        }
+
         public static Dictionary<string, AsafaResult> GetTestResults(string url)
         {
             HtmlGetLogic htmlLogic = new HtmlGetLogic();
