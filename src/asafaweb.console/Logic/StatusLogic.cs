@@ -4,6 +4,7 @@ using System.Net;
 using System.Web;
 using HtmlAgilityPack;
 using asafaweb.console.Enums;
+using asafaweb.console.Models;
 
 
 namespace asafaweb.console.Logic
@@ -23,6 +24,36 @@ namespace asafaweb.console.Logic
             FailOnWarning = false;
             FailOnNotTested = false;
             IgnoredTests = new List<string>();
+        }
+
+        public Dictionary<string, AsafaResult> AnalyseResults(ApiScanResult results)
+        {
+            Dictionary<string, AsafaResult> failedResults = new Dictionary<string, AsafaResult>();
+            foreach (Scan scan in results.Scans.Where(x => !IsTestIgnored(x.ScanType)))
+            {
+                if (FailOnWarning)
+                {
+                    if (scan.ScanStatus == AsafaResult.Warning)
+                    {
+                        failedResults.Add(scan.ScanType, scan.ScanStatus);
+                    }
+                }
+                if (FailOnNotTested)
+                {
+                    if (scan.ScanStatus == AsafaResult.NotTested)
+                    {
+                        failedResults.Add(scan.ScanType, scan.ScanStatus);
+                    }
+                }
+                if (FailOnFailure)
+                {
+                    if (scan.ScanStatus == AsafaResult.Fail)
+                    {
+                        failedResults.Add(scan.ScanType, scan.ScanStatus);
+                    }
+                }
+            }
+            return failedResults;
         }
 
         public Dictionary<string, AsafaResult> AnalyseResults(Dictionary<string, AsafaResult> results)
@@ -76,12 +107,6 @@ namespace asafaweb.console.Logic
                 default:
                     return AsafaResult.NotTested;
             }
-        }
-
-        public static void GetApiResults(string url, string apiUserName, string apiKey)
-        {
-            ApiLogic apiLogic = new ApiLogic(apiUserName, apiKey, url);
-            var JSONResult = apiLogic.Scan();
         }
 
         public static Dictionary<string, AsafaResult> GetTestResults(string url)

@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System.Collections.Generic;
+using NUnit.Framework;
+using asafaweb.console.Enums;
 using asafaweb.console.Exceptions;
 using asafaweb.console.Logic;
 using asafaweb.console.Models;
@@ -43,6 +45,18 @@ namespace asafaweb.tests
             var result = ApiLogic.ApiScanResult(JSON_RESULT);
             // Assert
             Assert.That(result.GetType(), Is.EqualTo(typeof(ApiScanResult)));
+        }
+
+        [Test]
+        public void StatusLogic_AnalyseApiResults_CorrectResultsReturned()
+        {
+            // Arrange
+            ApiScanResult results = ApiLogic.ApiScanResult(JSON_RESULT);
+            StatusLogic statusLogic = new StatusLogic();
+            // Act
+            Dictionary<string, AsafaResult> analysedResults = statusLogic.AnalyseResults(results);
+            // Assert
+            Assert.That(analysedResults.Count,Is.EqualTo(5));
         }
     }
 }
