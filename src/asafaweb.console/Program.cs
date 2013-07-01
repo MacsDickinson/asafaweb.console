@@ -11,11 +11,14 @@ namespace asafaweb.console
     class Program
     {
         private static string _url;
+        private static string _name;
+        private static string _key;
         private static bool _validParams = true;
         private static bool _throwExceptionOnFail = false;
         static void Main(string[] args)
         {
             StatusLogic logic = LoadParams(args);
+            ApiLogic api = new ApiLogic(_name, _key, _url);
             if (_validParams)
             {
                 Console.Write("Selected failures: ");
@@ -41,7 +44,7 @@ namespace asafaweb.console
                     Console.WriteLine("Ignored Tests: {0}", logic.IgnoredTests.Aggregate((i, j) => i + ", " + j));
                 }
                 Console.WriteLine("Scanning {0}", _url);
-                var results = logic.AnalyseResults(StatusLogic.GetTestResults(_url));
+                var results = logic.AnalyseResults(api.Scan());
                 if (results.Count > 0)
                 {
                     StringBuilder sb = new StringBuilder();
@@ -68,9 +71,18 @@ namespace asafaweb.console
             bool failonerror = false;
             bool failonwarning = false;
             bool failonnottested = false;
+
             List<string> ignoredTests = new List<string>();
             var p = new OptionSet
                 {
+                    {
+                        "n|name=", "Your asafaweb api name",
+                        s => _name = s
+                    },
+                    {
+                        "k|key=", "your asafaweb api key",
+                        s => _key = s
+                    },
                     {
                         "u|url=", "The url to test",
                         s => _url = s
@@ -84,7 +96,7 @@ namespace asafaweb.console
                         v => { if (v != null) failonwarning = true; }
                     },
                     {
-                        "n|failonnottested", "Fail the test if any tests arn't completed",
+                        "nt|failonnottested", "Fail the test if any tests arn't completed",
                         v => { if (v != null) failonnottested = true; }
                     },
                     {
@@ -127,6 +139,18 @@ namespace asafaweb.console
                 _validParams = false;
                 string message = string.Join(" ", extra.ToArray());
                 Console.WriteLine("Unexpected parameters: {0}", message);
+            }
+
+            if (string.IsNullOrEmpty(_name))
+            {
+                _validParams = false;
+                Console.WriteLine("No API Name provided. Please provide with the option -name. Try -help for more info...");
+            }
+
+            if (string.IsNullOrEmpty(_key))
+            {
+                _validParams = false;
+                Console.WriteLine("No API key provided. Please provide with the option -key. Try -help for more info...");
             }
 
             if (string.IsNullOrEmpty(_url))
