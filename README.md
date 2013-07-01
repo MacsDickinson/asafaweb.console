@@ -3,7 +3,13 @@ asafaweb.console
 
 A simple console app that runs the asafaweb tests and scrapes the results. The purpose of this is to enable an automated post publish security check through CI platforms such as NANT and MSBuild.
 
-Download only the required files here: http://bit.ly/10H9PRr (v0.0.1)
+Updates
+-------
+
+| Version | Details | Download |
+| -------:| -------:| --------:|
+| 0.0.2   | Updated to use the asafaweb api. Api username and key must be specified | http://bit.ly/129p319 |
+| 0.0.1   | Initial application that uses screen scraping | http://bit.ly/11a2NdH |
 
 Usage
 -----
@@ -12,16 +18,20 @@ Usage
 
 Example:
 
-```asafaweb.console -url=www.google.com -fw -ignore=CustomErrors```
+```asafaweb.console -n=macs -k=abc123 -url=www.google.com -fw -ignore=CustomErrors```
 
 Implementation using NAnt
 
 ```xml
 <property name="asafaweb.console.exe" value="C:\YourLocalPathTo\asafaweb.console.exe" />
+<property name="asafaweb.api.name" value="username" />
+<property name="asafaweb.api.key" value="apikey" />
 <property name="deployment.url" value="http://www.your-shiny-new-website.com/" />
   
 <target name="asafaweb">
     <exec failonerror="true" program="${asafaweb.console.exe}" verbose="true">
+      <arg value="-n:${asafaweb.api.name}" />
+      <arg value="-k:${asafaweb.api.key}" />
       <arg value="-u:${deployment.url}" />
       <arg value="-f" />
       <arg value="-i:CustomErrors,StackTrace" />
@@ -34,6 +44,8 @@ Options
 
 | Option            | Type                | Details                             | Usage               |
 | -----------------:|:-------------------:| -----------------------------------:| -------------------:|
+| n|name=           | string **required** | Your asafaweb username              | -n=macs             |
+| k|key=            | string **required** | your asafaweb api key               | -k=abc123           |
 | u|url=            | string **required** | The url to run the tests against    | -url=www.google.com |
 | f|failonfailures  | standalone          | Fail the test if any failures occur | -f                  |
 | w|failonwarning   | standalone          | Fail the test if any warnings occur | -w                  |
