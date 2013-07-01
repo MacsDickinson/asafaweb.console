@@ -44,13 +44,13 @@ Options
 
 | Option            | Type                | Details                             | Usage               |
 | -----------------:|:-------------------:| -----------------------------------:| -------------------:|
-| n|name=           | string **required** | Your asafaweb username              | -n=macs             |
-| k|key=            | string **required** | your asafaweb api key               | -k=abc123           |
-| u|url=            | string **required** | The url to run the tests against    | -url=www.google.com |
-| f|failonfailures  | standalone          | Fail the test if any failures occur | -f                  |
-| w|failonwarning   | standalone          | Fail the test if any warnings occur | -w                  |
-| n|failonnottested | standalone          | Fail if any tests arn't completed   | -n                  |
-| i|ignore=         | Comma seperated list| Ignore any of the tests specified   | -i=Tracing          |
+| n&#124;name=           | string **required** | Your asafaweb username              | -n=macs             |
+| k&#124;key=            | string **required** | your asafaweb api key               | -k=abc123           |
+| u&#124;url=            | string **required** | The url to run the tests against    | -url=www.google.com |
+| f&#124;failonfailures  | standalone          | Fail the test if any failures occur | -f                  |
+| w&#124;failonwarning   | standalone          | Fail the test if any warnings occur | -w                  |
+| n&#124;failonnottested | standalone          | Fail if any tests arn't completed   | -n                  |
+| i&#124;ignore=         | Comma seperated list| Ignore any of the tests specified   | -i=Tracing          |
 
 Tests
 -----
