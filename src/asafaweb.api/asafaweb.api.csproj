@@ -30,11 +30,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\asafaweb.console\packages\HtmlAgilityPack.1.4.6\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\asafaweb.console\bin\Debug\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,6 +49,8 @@
     <Compile Include="Enums\AsafaResult.cs" />
     <Compile Include="Exceptions\ApiException.cs" />
     <Compile Include="Logic\ApiLogic.cs" />
+    <Compile Include="Logic\HtmlGetLogic.cs" />
+    <Compile Include="Logic\StatusLogic.cs" />
     <Compile Include="Models\ApiScanResult.cs" />
     <Compile Include="Models\Request.cs" />
     <Compile Include="Models\Scan.cs" />
