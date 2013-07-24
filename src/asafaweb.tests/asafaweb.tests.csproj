@@ -52,6 +52,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\asafaweb.api\asafaweb.api.csproj">
+      <Project>{C6C7DDBC-AE98-4108-AEBB-BD55B6D72633}</Project>
+      <Name>asafaweb.api</Name>
+    </ProjectReference>
     <ProjectReference Include="..\asafaweb.console\asafaweb.console.csproj">
       <Project>{1b7a3496-7fc5-4b35-a2fa-f07b00a9ec93}</Project>
       <Name>asafaweb.console</Name>
